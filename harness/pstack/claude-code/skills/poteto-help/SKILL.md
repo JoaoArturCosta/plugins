@@ -108,7 +108,7 @@ Close calls:
 
 Not in pstack:
 
-- `/deslop`, `control-cli`, and `control-ui` ship in the `cursor-team-kit` plugin.
+- `/deslop` and `control-cli` ship in the `cursor-team-kit` plugin. Browser verification uses the `agent-browser` skill.
 - `/loop` and `/create-skill` are Cursor built-ins.
 - pstack has no `/orchestrate` skill. Orchestrate is a `/poteto-mode` playbook. If the slash menu shows `/orchestrate`, another plugin provides it.
 

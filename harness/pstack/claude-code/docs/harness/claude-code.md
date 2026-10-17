@@ -36,6 +36,12 @@ pstack skills use Cursor names. In Claude Code, read this file once per session,
 | `auto` or `inherit-parent` | Omit `model`. |
 | The `pstack-models.mdc` rule | Claude Code does not load it. Use the skill's default slug and map it with these rows. `setup-pstack` has nothing to write, so say so and stop. Never put its role lines in `CLAUDE.md` or `AGENTS.md`. |
 
+## Browser verification
+
+| Cursor | Claude Code |
+| --- | --- |
+| `control-ui` (browser, Electron, web UIs) | The `agent-browser` skill. Invoke it with the `Skill` tool and drive pages with the `agent-browser` CLI. Do not use the built-in browser pane or Claude in Chrome for verification. |
+
 ## Paths
 
 | Cursor | Claude Code |
