@@ -31,7 +31,7 @@ Launch all reviewers in a single message with the Task tool, one per entry on th
 | Reviewer A | `claude-opus-5-5-high` |
 | Reviewer B | `codex` |
 
-A `codex` entry is not a Task subagent. Run it through the Codex CLI instead: write the filled reviewer prompt to a temp file, then run `codex exec --sandbox read-only --ephemeral --skip-git-repo-check -C <repo root> -o <out file> - < <prompt file>` with Bash in the same message as the other reviewers (`run_in_background: true`). Codex uses the model from `~/.codex/config.toml`. Pass `-m <slug>` only when the entry is written `codex:<slug>`. Read `<out file>` as that reviewer's findings. If `codex` is not installed or the run fails, say so and run Reviewer B as a Task subagent on `claude-sonnet-5-5-xhigh` instead.
+A `codex` entry is not a Task subagent. Run it through the Codex CLI instead: write the filled reviewer prompt to a temp file, then run `codex exec -m gpt-6.1-sol -c model_reasoning_effort=high --sandbox read-only --ephemeral --skip-git-repo-check -C <repo root> -o <out file> - < <prompt file>` with Bash in the same message as the other reviewers (`run_in_background: true`). The default is `gpt-6.1-sol` at `high` reasoning. When the entry is written `codex:<slug>`, pass that slug to `-m` instead. Read `<out file>` as that reviewer's findings. If `codex` is not installed or the run fails, say so and run Reviewer B as a Task subagent on `claude-sonnet-5-5-xhigh` instead.
 
 Each other reviewer gets `subagent_type: generalPurpose`, `readonly: true`, and `model` set to its configured entry, or its table default when there is no configured line. Omit `model` for an `auto` or `inherit-parent` entry, so that reviewer runs on the parent model.
 
