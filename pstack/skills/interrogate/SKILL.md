@@ -29,9 +29,11 @@ Launch all reviewers in a single message with the Task tool, one per entry on th
 | Subagent | Default model |
 |----------|---------------|
 | Reviewer A | `claude-opus-5-5-high` |
-| Reviewer B | `claude-sonnet-5-5-xhigh` |
+| Reviewer B | `codex` |
 
-Each reviewer gets `subagent_type: generalPurpose`, `readonly: true`, and `model` set to its configured entry, or its table default when there is no configured line. Omit `model` for an `auto` or `inherit-parent` entry, so that reviewer runs on the parent model.
+A `codex` entry is not a Task subagent. Run it through the Codex CLI instead: write the filled reviewer prompt to a temp file, then run `codex exec --sandbox read-only --ephemeral --skip-git-repo-check -C <repo root> -o <out file> - < <prompt file>` with Bash in the same message as the other reviewers (`run_in_background: true`). Codex uses the model from `~/.codex/config.toml`. Pass `-m <slug>` only when the entry is written `codex:<slug>`. Read `<out file>` as that reviewer's findings. If `codex` is not installed or the run fails, say so and run Reviewer B as a Task subagent on `claude-sonnet-5-5-xhigh` instead.
+
+Each other reviewer gets `subagent_type: generalPurpose`, `readonly: true`, and `model` set to its configured entry, or its table default when there is no configured line. Omit `model` for an `auto` or `inherit-parent` entry, so that reviewer runs on the parent model.
 
 If the Task tool rejects a configured entry, run that reviewer on its family's table default and say so. Families go by prefix: `claude-*`, and `grok-*` with `cursor-grok-*` and `composer-*`. A refused `composer-*` entry runs on Reviewer B's default. With no family match, use Reviewer A's default. If it rejects a table default, spawn with the closest equivalent from the valid slugs in its error message (prefer the same family and reasoning tier), and open a separate PR to update the default table. Do not block the review on the slug issue. Never treat an alias entry as a rejected slug or apply either fallback to it.
 

@@ -64,7 +64,7 @@ arena runners: claude-opus-5-5-high, claude-sonnet-5-5-xhigh
 arena cross-judge pool: claude-opus-5-5-high, claude-sonnet-5-5-xhigh
 swarm workers: claude-sonnet-5-5-xhigh
 architect runners: claude-opus-5-5-high, claude-sonnet-5-5-xhigh
-interrogate reviewers: claude-opus-5-5-high, claude-sonnet-5-5-xhigh
+interrogate reviewers: claude-opus-5-5-high, codex
 ```
 
 ### 6. Confirm
