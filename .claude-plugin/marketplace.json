@@ -6,6 +6,13 @@
   },
   "plugins": [
     {
+      "name": "cursor-team-kit",
+      "source": "./cursor-team-kit",
+      "strict": false,
+      "version": "1.2.0",
+      "description": "Cursor team workflows: deslop, control-cli, fix-ci, verify-this, and more. Added so pstack's /deslop and control-cli references resolve."
+    },
+    {
       "name": "origin-apps",
       "source": "./origin-apps",
       "description": "Skills for building on the Cursor Origin API. Fetch the live spec first, then follow the Origin rules for credentials, scopes, webhooks, paging, and errors. Includes a skill that plans the port of an existing GitHub App."
