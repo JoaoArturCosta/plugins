@@ -50,6 +50,7 @@ const TERMS = [
   { key: "Cursor-only features", re: /Bugbot|Cursor [Aa]utomation|cursor\.(sh|com)\/automations|[Cc]loud [Aa]gent|built-in PR tool/ },
 ];
 const ROUTE_KEY = "Run another pstack skill";
+const CLAUDE_CODE_MODELS = new Set(["opus", "sonnet", "haiku", "fable", "inherit"]);
 const SKILL_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function walk(dir) {
@@ -103,6 +104,18 @@ for (const [key, using] of users) {
 for (const problem of problems) console.log(`FAIL ${problem}`);
 if (problems.length > 0) process.exit(1);
 
+// Claude Code reads an agent's `model` itself and accepts only an alias or `inherit` there, so a Cursor slug
+// such as `claude-opus-5-5-xhigh-fast` becomes its family alias and any other slug becomes `inherit`.
+function agentModel(text) {
+  const end = text.indexOf("\n---", 4);
+  if (!text.startsWith("---\n") || end < 0) return text;
+  const head = text.slice(0, end).replace(/^model:[ \t]*(\S+)[ \t]*$/m, (_, slug) => {
+    if (CLAUDE_CODE_MODELS.has(slug)) return `model: ${slug}`;
+    return `model: ${slug.match(/^claude-(opus|sonnet|haiku|fable)-/)?.[1] ?? "inherit"}`;
+  });
+  return head + text.slice(end);
+}
+
 // The pstack-relative path that a relative link in `from` points at, if that path exists.
 function resolve(from, href) {
   const target = href.replace(/[#?].*/, "");
@@ -125,6 +138,9 @@ function render() {
     join(PSTACK, "README.md"),
   ];
   const files = new Map(copies.map((path) => [relative(PSTACK, path), file(path)]));
+  for (const [path, entry] of files) {
+    if (path.startsWith("agents/")) entry.bytes = Buffer.from(agentModel(entry.bytes.toString("utf8")));
+  }
   const line =
     `In Claude Code, read [the Claude Code adapter](../../${ADAPTER}) once per session before you follow this skill. ` +
     "It maps the Cursor names in pstack skills to Claude Code.";
